@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_customers
-    group: customers_group
+    group: common_group
     access: public
     description: "test"
     data_tests:
@@ -63,7 +63,7 @@ models:
 
 
 groups:
-  - name: customers_group
+  - name: common_group
     owner:
       # 'name' or 'email' is required; additional properties allowed
       email: finance@jaffleshop.com
