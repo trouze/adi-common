@@ -1,24 +1,27 @@
-{% macro generate_database_name(custom_database_name=none, node=none) -%}
+{% macro generate_schema_name(custom_schema_name, node) -%}
 
-    {%- set default_database = target.database -%}
+    {%- set default_schema = target.schema -%}
+
     {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
+        {%- if custom_schema_name is none -%}
 
-        {{ default_database }}
-
-    {%- elif env_var('DBT_DEFAULT_CATALOG').endswith('_uat') -%}
-
-        {{ default_database }}
-
-    {% else %}
-        {%- if custom_database_name is none -%}
-
-            {{ default_database }}
+            {{ default_schema }}
 
         {%- else -%}
 
-            {{ custom_database_name | trim }}
+            {{ default_schema }}_{{ custom_schema_name | trim }}
 
         {%- endif -%}
-    {%- endif -%}
 
+    {% else %}
+        {%- if custom_schema_name is none -%}
+
+            {{ default_schema }}
+
+        {%- else -%}
+
+            {{ custom_schema_name | trim }}
+
+        {%- endif -%}
+    {% endif %}
 {%- endmacro %}
