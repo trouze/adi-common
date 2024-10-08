@@ -1,5 +1,5 @@
 {% macro default__generate_schema_name(custom_schema_name, node) -%}
-    {{ log("Custom generate_schema_name called!", info=True) }}
+    {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
     {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
@@ -27,7 +27,7 @@
 {%- endmacro %}
 
 {% macro snowflake__generate_schema_name(custom_schema_name, node) -%}
-    {{ log("Custom generate_schema_name called!", info=True) }}
+    {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
     {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
@@ -55,7 +55,7 @@
 {%- endmacro %}
 
 {% macro generate_schema_name(custom_schema_name, node) -%}
-    {{ log("Custom generate_schema_name called!", info=True) }}
+    {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
     {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
@@ -83,7 +83,7 @@
 {%- endmacro %}
 
 {% macro adi_common__generate_schema_name(custom_schema_name, node) -%}
-    {{ log("Custom generate_schema_name called!", info=True) }}
+    {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
     {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
