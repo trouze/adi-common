@@ -2,8 +2,6 @@ version: 2
 
 models:
   - name: stg_customers
-    group: common_group
-    access: public
     description: "test"
     data_tests:
       - is_model_fresh:
