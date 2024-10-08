@@ -1,4 +1,4 @@
-{% macro adi_common__generate_schema_name(custom_schema_name, node) -%}
+{% macro snowflake__generate_schema_name(custom_schema_name, node) -%}
     {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
