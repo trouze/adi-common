@@ -1,4 +1,4 @@
-{% macro generate_schema_name(custom_schema_name, node) -%}
+{% macro default__generate_schema_name(custom_schema_name, node) -%}
     {{ log("Custom generate_schema_name called!", info=true) }}
     {%- set default_schema = target.schema -%}
 
