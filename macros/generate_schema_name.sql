@@ -2,7 +2,7 @@
 
     {%- set default_schema = target.schema -%}
 
-    {%- if env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'dev' -%}
+    {%- if target.name == 'dev' -%}
         {%- if custom_schema_name is none -%}
 
             {{ default_schema }}
