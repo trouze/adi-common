@@ -13,6 +13,27 @@
 
         {%- endif -%}
 
+    {%- elif env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'staging' or target.name == 'staging' -%}
+        {%- if custom_schema_name is none -%}
+
+            {{ default_schema }}
+
+        {%- else -%}
+
+            {{ custom_schema_name | trim }}
+
+        {%- endif -%}
+
+    {%- elif env_var('DBT_CLOUD_ENVIRONMENT_TYPE') == 'prod' or target.name == 'prod' -%}
+        {%- if custom_schema_name is none -%}
+
+            {{ default_schema }}
+
+        {%- else -%}
+
+            {{ custom_schema_name | trim }}
+
+        {%- endif -%}
     {% else %}
         {%- if custom_schema_name is none -%}
 
