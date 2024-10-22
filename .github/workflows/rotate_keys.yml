@@ -1,0 +1,60 @@
+# Sample workflow for building and deploying a Hugo site to GitHub Pages
+name: Update dbt Cloud environment variable
+
+on:
+  schedule:
+    - cron: "0 */7 * * *"
+  workflow_dispatch:
+
+jobs:
+  get-gh-access-token:
+    name: Get Github access token in dbt Cloud
+    outputs:
+      generatedAccessToken: ${{ steps.write-to-output.outputs.generatedAccessToken }}
+    steps:
+      - name: Get Github access token
+        id: get-access-token
+        env:
+          GH_APP_PEM: ${{ secrets.GH_APP_PEM }}
+          GH_APP_ID: ${{ vars.GH_APP_ID }}
+          GH_APP_INSTALLATION_ID: ${{ vars.GH_APP_INSTALLATION_ID }}
+        uses: adi-innersource/generate-github-app-token-action@<version>
+      - name: Write to output
+        id: write-to-output
+        run: echo "generatedAccessToken=$generatedAccessToken" >> $GITHUB_OUTPUT
+
+  # JOB to update project environment variable in dbt Cloud
+  update-dbt-cloud-env:
+    needs: get-gh-access-token
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - project: sls_dh
+            project_id: 282257
+          - project: gbu_dh
+            project_id: 282258
+
+    # Set the environment variables needed for the update
+    env:
+      DBT_ACCOUNT_ID: 51798
+      DBT_PROJECT_ID: ${{ matrix.project_id }}
+      DBT_VARIABLE_NAME: "DBT_ENV_SECRET_GH"
+      DBT_API_KEY: ${{ secrets.DBT_API_KEY }}
+      DBT_VARIABLE_VALUE: ${{ needs.get-gh-access-token.outputs.generatedAccessToken }}
+
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+      - run: pip install -r utils/actions/update_env/update_env_requirements.txt
+      - name: Run dbt Cloud env update
+        run: >
+          python3 utils/actions/update_env/update_env.py
+          --api_key=$DBT_API_KEY
+          --account_id=$DBT_ACCOUNT_ID
+          --project_id=$DBT_PROJECT_ID
+          --variable_name=$DBT_VARIABLE_NAME
+          --variable_value=$DBT_VARIABLE_VALUE
