@@ -2,13 +2,14 @@
 name: Update dbt Cloud environment variable
 
 on:
-  schedule:
-    - cron: "0 */7 * * *"
+  # schedule:
+  #   - cron: "0 */7 * * *"
   workflow_dispatch:
 
 jobs:
   get-gh-access-token:
     name: Get Github access token in dbt Cloud
+    runs-on: ubuntu-latest
     outputs:
       generatedAccessToken: ${{ steps.write-to-output.outputs.generatedAccessToken }}
     steps:
